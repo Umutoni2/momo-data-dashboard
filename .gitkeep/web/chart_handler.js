@@ -1,1 +1,1 @@
-
+Fetch + render charts/tables
