@@ -19,7 +19,7 @@ through an interactive dashboard.
 [View Architecture Diagram](./architecture.png)
 
 ## Scrum Board
-[View our Trello Board](https://trello.com/invite/b/69b1b15012f74202f415d509/ATTI2f35a22d58c95f0bd1172f7c5fb53f978E1D5E78/momo-dashboard-pixelstack)
+[View our Trello Board](https://trello.com/b/xi6Ymw1S/momo-dashboard-pixelstack)
 
 ## Tech Stack
 - **Backend:** Python (ETL pipeline)
