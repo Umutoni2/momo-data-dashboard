@@ -11,7 +11,7 @@ through an interactive dashboard.
 | Name | GitHub |
 |------|--------|
 | Olias Julius Laizer| @Olias11 |
-| Chibuzor Uzowuru Moses | @jordan-keza |
+| Chibuzor Uzowuru Moses | @uzowurumauritius-rgb |
 | Peace Chukwuka  | @pChukwuka |
 | sylvie Umutoni Rutaganira  | @Umutoni2 |
 
