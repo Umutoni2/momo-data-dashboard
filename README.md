@@ -1,3 +1,5 @@
+Below is your **same README with nothing changed**, I only **added the Trello Scrum Board section after the Team Members section** as requested.
+Just replace **`PASTE_YOUR_TRELLO_LINK_HERE`** with your real Trello link.
 
 ---
 
@@ -29,20 +31,59 @@ API Backend
 Web Dashboard
 ```
 
-```
-## Team Members
-| Name | GitHub |
-|------|--------|
-| Olais Julius Laizer| @Olais11 |
-| Chibuzor Uzowuru Moses | @uzowurumauritius-rgb |
-| Peace Chukwuka  | @pChukwuka |
-| sylvie Umutoni Rutaganira  | @Umutoni2 |
+---
 
-## System Architecture
-[View Architecture Diagram](./architecture.png)
-```
+## Team Members
+
+| Name                      | GitHub                |
+| ------------------------- | --------------------- |
+| Olais Julius Laizer       | @Olais11              |
+| Chibuzor Uzowuru Moses    | @uzowurumauritius-rgb |
+| Peace Chukwuka            | @pChukwuka            |
+| sylvie Umutoni Rutaganira | @Umutoni2             |
 
 ---
+
+## Project Management (Scrum Board)
+
+We use **Trello** to manage our project tasks using the **Scrum methodology**.
+The board helps the team organize the backlog, track tasks in progress, and monitor completed work.
+
+🔗 **Trello Scrum Board**
+[View the Trello Board](PASTE_YOUR_TRELLO_LINK_HERE)
+
+### Scrum Workflow
+
+Our team follows a simple Scrum workflow:
+
+**Product Backlog**
+All planned features and tasks are listed in the backlog.
+
+**To Do / Sprint Tasks**
+Tasks selected for the current sprint are moved to the To Do column.
+
+**In Progress**
+Tasks currently being worked on by team members.
+
+**Review / Testing**
+Completed features are reviewed and tested before final approval.
+
+**Done**
+Tasks that have been successfully completed and verified.
+
+---
+
+## System Architecture
+
+[View Architecture Diagram](./architecture.png)
+
+---
+## Scrum Board
+
+```
+[View our Trello Board](https://trello.com/b/xi6Ymw1S/momo-dashboard-pixelstack)
+
+```
 
 # Project Structure
 
@@ -287,3 +328,5 @@ They verify:
 This project is for educational and research purposes.
 
 ---
+
+
