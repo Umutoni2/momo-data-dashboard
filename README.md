@@ -5,8 +5,6 @@ A lightweight **Mobile Money (MoMo) transaction analytics dashboard** that proce
 
 The system includes an **ETL pipeline**, **API backend**, and **frontend dashboard** to analyze transaction data such as spending categories and transaction patterns.
 
----
-
 # Project Architecture
 
 The project follows a simple **data pipeline architecture**:
@@ -26,13 +24,10 @@ API Backend
       ▼
 Web Dashboard
 ```
----
 
 ## System Architecture
 
 [View Architecture Diagram](./architecture.png)
-
----
 
 ## Team Members
 
@@ -42,8 +37,6 @@ Web Dashboard
 | Chibuzor Uzowuru Moses    | @uzowurumauritius-rgb |
 | Peace Chukwuka            | @pChukwuka            |
 | sylvie Umutoni Rutaganira | @Umutoni2             |
-
----
 
 ## Project Management (Scrum Board)
 
@@ -104,8 +97,6 @@ momo-data-dashboard
 * Display insights on a **web dashboard**
 * Export processed data as JSON
 
----
-
 # ETL Pipeline
 
 The ETL pipeline performs the following steps:
@@ -144,7 +135,6 @@ Clean data is stored in:
 data/db.sqlite3
 ```
 
----
 
 # Running the Project
 
@@ -155,7 +145,6 @@ git clone https://github.com/yourusername/momo-data-dashboard.git
 cd momo-data-dashboard
 ```
 
----
 
 ## 2 Setup environment
 
@@ -171,7 +160,6 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
----
 
 ## 3 Run the ETL pipeline
 
@@ -188,7 +176,6 @@ This will:
 * categorize transactions
 * load them into the database
 
----
 
 ## 4 Export dashboard JSON
 
@@ -201,8 +188,6 @@ This generates:
 ```
 data/processed/dashboard.json
 ```
-
----
 
 ## 5 Start the dashboard
 
@@ -218,8 +203,6 @@ Then open:
 http://localhost:8000
 ```
 
----
-
 # Dashboard
 
 The dashboard provides visual insights such as:
@@ -234,8 +217,6 @@ Charts are generated using JavaScript in:
 ```
 web/chart_handler.js
 ```
-
----
 
 # Testing
 
@@ -257,8 +238,6 @@ They verify:
 * Data cleaning
 * Transaction categorization
 
----
-
 # Data Files
 
 | Folder            | Description            |
@@ -267,8 +246,6 @@ They verify:
 | `data/processed`  | Dashboard-ready JSON   |
 | `data/logs`       | ETL pipeline logs      |
 | `data/db.sqlite3` | SQLite database        |
-
----
 
 # Technologies Used
 
@@ -279,8 +256,6 @@ They verify:
 * Bash Scripts
 * ETL Data Processing
 
----
-
 # Future Improvements
 
 * Real-time transaction updates
@@ -289,12 +264,9 @@ They verify:
 * Multiple account support
 * Improved dashboard visualizations
 
----
-
 # License
 
 This project is for educational and research purposes.
 
----
 
 
