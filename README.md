@@ -29,6 +29,19 @@ API Backend
 Web Dashboard
 ```
 
+```
+## Team Members
+| Name | GitHub |
+|------|--------|
+| Olais Julius Laizer| @Olais11 |
+| Chibuzor Uzowuru Moses | @uzowurumauritius-rgb |
+| Peace Chukwuka  | @pChukwuka |
+| sylvie Umutoni Rutaganira  | @Umutoni2 |
+
+## System Architecture
+[View Architecture Diagram](./architecture.png)
+```
+
 ---
 
 # Project Structure
