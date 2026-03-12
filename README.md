@@ -10,7 +10,7 @@ through an interactive dashboard.
 ## Team Members
 | Name | GitHub |
 |------|--------|
-| Olias Julius Laizer| @Olias11 |
+| Olais Julius Laizer| @Olais11 |
 | Chibuzor Uzowuru Moses | @uzowurumauritius-rgb |
 | Peace Chukwuka  | @pChukwuka |
 | sylvie Umutoni Rutaganira  | @Umutoni2 |
