@@ -33,7 +33,6 @@ Web Dashboard
 [View Architecture Diagram](./architecture.png)
 
 ---
----
 
 ## Team Members
 
@@ -51,7 +50,7 @@ Web Dashboard
 We use **Trello** to manage our project tasks using the **Scrum methodology**.
 The board helps the team organize the backlog, track tasks in progress, and monitor completed work.
 
-🔗 **Trello Scrum Board**
+ **Trello Scrum Board**
 [View the Trello Board](PASTE_YOUR_TRELLO_LINK_HERE)
 
 ### Scrum Workflow
