@@ -1,6 +1,3 @@
-Below is your **same README with nothing changed**, I only **added the Trello Scrum Board section after the Team Members section** as requested.
-Just replace **`PASTE_YOUR_TRELLO_LINK_HERE`** with your real Trello link.
-
 ---
 
 # MoMo Data Dashboard
@@ -30,7 +27,13 @@ API Backend
       ▼
 Web Dashboard
 ```
+---
 
+## System Architecture
+
+[View Architecture Diagram](./architecture.png)
+
+---
 ---
 
 ## Team Members
@@ -71,13 +74,7 @@ Completed features are reviewed and tested before final approval.
 **Done**
 Tasks that have been successfully completed and verified.
 
----
 
-## System Architecture
-
-[View Architecture Diagram](./architecture.png)
-
----
 ## Scrum Board
 
 ```
