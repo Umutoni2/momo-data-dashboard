@@ -51,34 +51,7 @@ We use **Trello** to manage our project tasks using the **Scrum methodology**.
 The board helps the team organize the backlog, track tasks in progress, and monitor completed work.
 
  **Trello Scrum Board**
-[View the Trello Board](PASTE_YOUR_TRELLO_LINK_HERE)
-
-### Scrum Workflow
-
-Our team follows a simple Scrum workflow:
-
-**Product Backlog**
-All planned features and tasks are listed in the backlog.
-
-**To Do / Sprint Tasks**
-Tasks selected for the current sprint are moved to the To Do column.
-
-**In Progress**
-Tasks currently being worked on by team members.
-
-**Review / Testing**
-Completed features are reviewed and tested before final approval.
-
-**Done**
-Tasks that have been successfully completed and verified.
-
-
-## Scrum Board
-
-```
-[View our Trello Board](https://trello.com/b/xi6Ymw1S/momo-dashboard-pixelstack)
-
-```
+[View the Trello Board](https://trello.com/b/xi6Ymw1S/momo-dashboard-pixelstack)
 
 # Project Structure
 
