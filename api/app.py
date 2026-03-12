@@ -1,1 +1,1 @@
-Minimal FastAPI with /transactions
+Minimal FastAPI with /transactions,/analytics
