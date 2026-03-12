@@ -1,34 +1,276 @@
+
+---
+
 # MoMo Data Dashboard
 
-## Team Name: **PixelStack**
+A lightweight **Mobile Money (MoMo) transaction analytics dashboard** that processes XML transaction data, stores it in a database, and visualizes insights through a simple web interface.
 
-## Project Description
-A fullstack application that processes MTN MoMo SMS transaction data from XML format,
-cleans and categorizes it, stores it in a relational database, and visualizes it
-through an interactive dashboard.
+The system includes an **ETL pipeline**, **API backend**, and **frontend dashboard** to analyze transaction data such as spending categories and transaction patterns.
 
-## Team Members
-| Name | GitHub |
-|------|--------|
-| Olais Julius Laizer| @Olais11 |
-| Chibuzor Uzowuru Moses | @uzowurumauritius-rgb |
-| Peace Chukwuka  | @pChukwuka |
-| sylvie Umutoni Rutaganira  | @Umutoni2 |
+---
 
-## System Architecture
-[View Architecture Diagram](./architecture.png)
+# Project Architecture
 
-## Scrum Board
-[View our Trello Board](https://trello.com/b/xi6Ymw1S/momo-dashboard-pixelstack)
+The project follows a simple **data pipeline architecture**:
 
-## Tech Stack
-- **Backend:** Python (ETL pipeline)
-- **Database:** SQLite
-- **Frontend:** HTML, CSS, JavaScript
-- **Optional API:** FastAPI
-
-## How to Run
-_Instructions will be added as the project develops._
 ```
+Raw XML Data
+      │
+      ▼
+ETL Pipeline (Parse → Clean → Categorize)
+      │
+      ▼
+SQLite Database
+      │
+      ▼
+API Backend
+      │
+      ▼
+Web Dashboard
+```
+
+---
+
+# Project Structure
+
+```
+momo-data-dashboard
+│
+├── api/                # Backend API
+│   ├── app.py
+│   ├── db.py
+│   └── schemas.py
+│
+├── etl/                # Data processing pipeline
+│   ├── parse_xml.py
+│   ├── clean_normalize.py
+│   ├── categorize.py
+│   ├── load_db.py
+│   └── config.py
+│
+├── data/
+│   ├── raw/            # Raw MoMo XML data
+│   ├── processed/      # Processed dashboard data
+│   ├── logs/           # ETL logs
+│   └── db.sqlite3      # SQLite database
+│
+├── web/
+│   ├── style.css
+│   ├── chart_handler.js
+│   └── assets/
+│
+├── scripts/            # Helper scripts
+│   ├── run_etl.sh
+│   ├── export_json.sh
+│   └── serve_frontend.sh
+│
+├── tests/              # Unit tests
+│
+├── index.html          # Dashboard UI
+└── README.md
+```
+
+---
+
+# Features
+
+* Parse **MoMo XML transaction data**
+* Clean and normalize transaction records
+* Automatically **categorize transactions**
+* Store data in **SQLite database**
+* Provide data through an **API**
+* Display insights on a **web dashboard**
+* Export processed data as JSON
+
+---
+
+# ETL Pipeline
+
+The ETL pipeline performs the following steps:
+
+### 1 Parse XML
+
+Reads raw MoMo transaction data from:
+
+```
+data/raw/momo.xml
+```
+
+### 2 Clean & Normalize
+
+Standardizes:
+
+* Dates
+* Amounts
+* Transaction descriptions
+
+### 3 Categorize Transactions
+
+Transactions are automatically grouped into categories such as:
+
+* Food
+* Transport
+* Bills
+* Shopping
+* Transfers
+
+### 4 Load into Database
+
+Clean data is stored in:
+
+```
+data/db.sqlite3
+```
+
+---
+
+# Running the Project
+
+## 1 Clone the repository
+
+```bash
+git clone https://github.com/yourusername/momo-data-dashboard.git
+cd momo-data-dashboard
+```
+
+---
+
+## 2 Setup environment
+
+Copy the example environment file:
+
+```bash
+cp .env.example .env
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 3 Run the ETL pipeline
+
+Process the XML data:
+
+```bash
+./scripts/run_etl.sh
+```
+
+This will:
+
+* parse the XML
+* clean the data
+* categorize transactions
+* load them into the database
+
+---
+
+## 4 Export dashboard JSON
+
+```bash
+./scripts/export_json.sh
+```
+
+This generates:
+
+```
+data/processed/dashboard.json
+```
+
+---
+
+## 5 Start the dashboard
+
+Run the frontend server:
+
+```bash
+./scripts/serve_frontend.sh
+```
+
+Then open:
+
+```
+http://localhost:8000
+```
+
+---
+
+# Dashboard
+
+The dashboard provides visual insights such as:
+
+* Total spending
+* Spending by category
+* Transaction history
+* Summary statistics
+
+Charts are generated using JavaScript in:
+
+```
+web/chart_handler.js
+```
+
+---
+
+# Testing
+
+Run the unit tests:
+
+```bash
+pytest
+```
+
+Tests are located in:
+
+```
+tests/
+```
+
+They verify:
+
+* XML parsing
+* Data cleaning
+* Transaction categorization
+
+---
+
+# Data Files
+
+| Folder            | Description            |
+| ----------------- | ---------------------- |
+| `data/raw`        | Original MoMo XML data |
+| `data/processed`  | Dashboard-ready JSON   |
+| `data/logs`       | ETL pipeline logs      |
+| `data/db.sqlite3` | SQLite database        |
+
+---
+
+# Technologies Used
+
+* Python
+* SQLite
+* HTML / CSS
+* JavaScript
+* Bash Scripts
+* ETL Data Processing
+
+---
+
+# Future Improvements
+
+* Real-time transaction updates
+* Advanced spending analytics
+* User authentication
+* Multiple account support
+* Improved dashboard visualizations
+
+---
+
+# License
+
+This project is for educational and research purposes.
 
 ---
