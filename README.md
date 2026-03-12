@@ -85,8 +85,6 @@ momo-data-dashboard
 └── README.md
 ```
 
----
-
 # Features
 
 * Parse **MoMo XML transaction data**
