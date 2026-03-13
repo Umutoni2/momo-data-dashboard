@@ -139,7 +139,7 @@ data/db.sqlite3
 ## 1 Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/momo-data-dashboard.git
+git clone https://github.com/Umutoni2/momo-data-dashboard.git
 cd momo-data-dashboard
 ```
 
