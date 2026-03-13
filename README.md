@@ -264,7 +264,7 @@ They verify:
 
 # License
 
-This project is for educational and research purposes.
+This is an educational project; additional features will be added as it grows.
 
 
 
