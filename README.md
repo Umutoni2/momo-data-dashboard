@@ -35,7 +35,7 @@ Web Dashboard
 | ------------------------- | --------------------- |
 | Olais Julius Laizer       | @Olais11              |
 | Chibuzor Uzowuru Moses    | @uzowurumauritius-rgb |
-| Peace Chukwuka            | @pChukwuka            |
+| Peace Chukwuka            | @pchukwuka            |
 | sylvie Umutoni Rutaganira | @Umutoni2             |
 
 ## Project Management (Scrum Board)
