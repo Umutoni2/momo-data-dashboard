@@ -88,3 +88,36 @@ CREATE TABLE IF NOT EXISTS Transaction_Category_Mapping (
     CONSTRAINT fk_map_cat  FOREIGN KEY (Category_ID)    REFERENCES Transaction_Categories(Category_ID)  ON DELETE CASCADE,
     CONSTRAINT uq_tx_cat   UNIQUE (Transaction_ID, Category_ID)
 ) COMMENT='Junction table resolving many-to-many between Transactions and Transaction_Categories';
+
+-- ============================================================
+-- TABLE: System_Logs
+-- Description: Audit trail for ETL pipeline and system events
+-- ============================================================
+CREATE TABLE IF NOT EXISTS System_Logs (
+    Log_ID            INT            AUTO_INCREMENT PRIMARY KEY COMMENT 'Unique log entry ID',
+    Event_Type        ENUM('INFO','WARNING','ERROR','DEBUG')
+                                     NOT NULL DEFAULT 'INFO'    COMMENT 'Severity level of the event',
+    Event_Source      VARCHAR(100)                              COMMENT 'Module or service that generated the log',
+    Event_Description TEXT           NOT NULL                   COMMENT 'Detailed description of the event',
+    Transaction_ID    INT                                       COMMENT 'Optional FK to related transaction',
+    User_ID           INT                                       COMMENT 'Optional FK to related user',
+    IP_Address        VARCHAR(45)                               COMMENT 'IPv4 or IPv6 address of client',
+    Created_At        DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp when event was logged',
+
+    CONSTRAINT fk_log_user  FOREIGN KEY (User_ID)        REFERENCES Users(User_ID)        ON DELETE SET NULL,
+    CONSTRAINT fk_log_tx    FOREIGN KEY (Transaction_ID) REFERENCES Transactions(Transaction_ID) ON DELETE SET NULL
+) COMMENT='System audit logs for ETL pipeline processing and security events';
+
+
+-- ============================================================
+-- INDEXES — Performance optimisation
+-- ============================================================
+CREATE INDEX idx_tx_sender        ON Transactions(Sender_ID);
+CREATE INDEX idx_tx_receiver      ON Transactions(Receiver_ID);
+CREATE INDEX idx_tx_datetime      ON Transactions(Transaction_DateTime);
+CREATE INDEX idx_tx_status        ON Transactions(Status);
+CREATE INDEX idx_tx_category      ON Transactions(Transaction_Category_ID);
+CREATE INDEX idx_log_event_type   ON System_Logs(Event_Type);
+CREATE INDEX idx_log_created      ON System_Logs(Created_At);
+CREATE INDEX idx_log_tx           ON System_Logs(Transaction_ID);
+CREATE INDEX idx_user_phone       ON Users(Phone_Number);
