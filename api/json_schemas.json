@@ -1,0 +1,273 @@
+{
+  "_documentation": "MoMo SMS Data System Processing JSON Schemas & API Response Examples",
+  "_version": "2.0.0",
+  "_team": "MoMo DB Team",
+  "_description": "This file documents all JSON representations of the database entities and their SQL-to-JSON field mappings. Each schema corresponds to a MySQL table and demonstrates how relational data is serialised for REST API responses.",
+
+  "schemas": {
+
+    "User": {
+      "_description": "Represents a registered MoMo platform user / account holder",
+      "_sql_table": "Users",
+      "_sql_columns": ["User_ID", "Full_Name", "Phone_Number", "Account_Balance", "Email", "Is_Active", "Created_At", "Updated_At"],
+      "example": {
+        "user_id": 1,
+        "full_name": "Sylvie Rutaganira",
+        "phone_number": "+250788123456",
+        "account_balance": 15000.00,
+        "email": "sylvie@example.rw",
+        "is_active": true,
+        "created_at": "2026-01-15T08:30:00Z",
+        "updated_at": "2026-03-09T10:00:00Z"
+      }
+    },
+
+    "Transaction_Category": {
+      "_description": "Classifies the type of a transaction (Transfer, Payment, Deposit, etc.)",
+      "_sql_table": "Transaction_Categories",
+      "_sql_columns": ["Category_ID", "Category_Name", "Description", "Is_Active", "Created_At"],
+      "example": {
+        "category_id": 1,
+        "category_name": "Transfer",
+        "description": "Person-to-person mobile money transfer",
+        "is_active": true,
+        "created_at": "2026-01-01T00:00:00Z"
+      }
+    },
+
+    "Transaction": {
+      "_description": "A single mobile money transaction record (flat representation)",
+      "_sql_table": "Transactions",
+      "_sql_columns": [
+        "Transaction_ID", "Sender_ID", "Receiver_ID", "Transaction_Amount",
+        "Fee", "Balance_After_Transaction", "Transaction_DateTime",
+        "Transaction_Category_ID", "Transaction_Reference", "Status", "Description", "Created_At"
+      ],
+      "example": {
+        "transaction_id": 1,
+        "sender_id": 1,
+        "receiver_id": 2,
+        "transaction_amount": 6000.00,
+        "fee": 100.00,
+        "balance_after_transaction": 8900.00,
+        "transaction_datetime": "2026-03-01T10:15:00Z",
+        "transaction_category_id": 1,
+        "transaction_reference": "TX-2026-0001",
+        "status": "Success",
+        "description": "School fees contribution",
+        "created_at": "2026-03-01T10:15:02Z"
+      }
+    },
+
+    "System_Log": {
+      "_description": "Tracks ETL pipeline events, errors, and security alerts",
+      "_sql_table": "System_Logs",
+      "_sql_columns": ["Log_ID", "Event_Type", "Event_Source", "Event_Description", "Transaction_ID", "User_ID", "IP_Address", "Created_At"],
+      "example": {
+        "log_id": 4,
+        "event_type": "ERROR",
+        "event_source": "etl/load_db.py",
+        "event_description": "Transaction TX-2026-failed 0007 fee validation error",
+        "transaction_id": 7,
+        "user_id": 6,
+        "ip_address": "10.0.0.2",
+        "created_at": "2026-03-06T13:10:45Z"
+      }
+    },
+
+    "Transaction_Category_Mapping": {
+      "_description": "Junction table record resolving M:N between Transactions and Transaction_Categories",
+      "_sql_table": "Transaction_Category_Mapping",
+      "_sql_columns": ["Mapping_ID", "Transaction_ID", "Category_ID", "Assigned_At"],
+      "example": {
+        "mapping_id": 2,
+        "transaction_id": 1,
+        "category_id": 6,
+        "assigned_at": "2026-03-01T10:15:03Z"
+      }
+    },
+
+    "CompleteTransaction": {
+      "_description": "Full transaction object with ALL related nested data used for detailed API responses. Represents a JOIN across Transactions, Users (sender + receiver), Transaction_Categories, and System_Logs.",
+      "_sql_mapping": "SELECT t.*, s.*, r.*, tc.*, sl.* FROM Transactions t JOIN Users s ON t.Sender_ID=s.User_ID JOIN Users r ON t.Receiver_ID=r.User_ID LEFT JOIN Transaction_Categories tc ON t.Transaction_Category_ID=tc.Category_ID LEFT JOIN System_Logs sl ON t.Transaction_ID=sl.Transaction_ID",
+      "example": {
+        "transaction_id": 1,
+        "reference": "TX-2026-0001",
+        "status": "Success",
+        "description": "School fees contribution",
+        "amount": 6000.00,
+        "fee": 100.00,
+        "balance_after_transaction": 8900.00,
+        "datetime": "2026-03-01T10:15:00Z",
+        "created_at": "2026-03-01T10:15:02Z",
+
+        "category": {
+          "category_id": 1,
+          "category_name": "Transfer",
+          "description": "Person-to-person mobile money transfer"
+        },
+
+        "additional_categories": [
+          {
+            "category_id": 6,
+            "category_name": "Bill Payment",
+            "description": "Utility or subscription bill payment"
+          }
+        ],
+
+        "sender": {
+          "user_id": 1,
+          "full_name": "Sylvie Rutaganira",
+          "phone_number": "+250788123456",
+          "account_balance": 8900.00
+        },
+
+        "receiver": {
+          "user_id": 2,
+          "full_name": "Elvire Akayezu",
+          "phone_number": "+250795149666",
+          "account_balance": 34000.00
+        },
+
+        "system_logs": [
+          {
+            "log_id": 2,
+            "event_type": "INFO",
+            "event_source": "etl/load_db.py",
+            "event_description": "Transaction TX-2026-0001 successfully inserted",
+            "created_at": "2026-03-01T10:15:03Z"
+          }
+        ]
+      }
+    },
+
+    "APIResponse_TransactionList": {
+      "_description": "Paginated list transactions of standard REST API list response",
+      "example": {
+        "status": "success",
+        "code": 200,
+        "message": "Transactions retrieved successfully",
+        "data": {
+          "total": 10,
+          "page": 1,
+          "per_page": 10,
+          "transactions": [
+            {
+              "transaction_id": 1,
+              "reference": "TX-2026-0001",
+              "amount": 6000.00,
+              "fee": 100.00,
+              "status": "Success",
+              "datetime": "2026-03-01T10:15:00Z",
+              "category": "Transfer",
+              "sender": "Sylvie Rutaganira",
+              "receiver": "Elvire Akayezu",
+              "description": "School fees contribution"
+            },
+            {
+              "transaction_id": 2,
+              "reference": "TX-2026-0002",
+              "amount": 2500.00,
+              "fee": 50.00,
+              "status": "Success",
+              "datetime": "2026-03-02T11:30:00Z",
+              "category": "Payment",
+              "sender": "Elvire Akayezu",
+              "receiver": "Jean Claude Habimana",
+              "description": "Restaurant payment"
+            },
+            {
+              "transaction_id": 3,
+              "reference": "TX-2026-0003",
+              "amount": 5000.00,
+              "fee": 100.00,
+              "status": "Success",
+              "datetime": "2026-03-03T09:05:00Z",
+              "category": "Transfer",
+              "sender": "Jean Claude Habimana",
+              "receiver": "Sylvie Rutaganira",
+              "description": "Rent payment"
+            },
+            {
+              "transaction_id": 7,
+              "reference": "TX-2026-0007",
+              "amount": 1500.00,
+              "fee": 30.00,
+              "status": "Failed",
+              "datetime": "2026-03-06T13:10:00Z",
+              "category": "Payment",
+              "sender": "Patrick Nzeyimana",
+              "receiver": "Diane Ingabire",
+              "description": "payment Supermarket insufficient fee"
+            }
+          ]
+        }
+      }
+    },
+
+    "APIResponse_UserProfile": {
+      "_description": "Full user profile with transaction history and statistics",
+      "example": {
+        "status": "success",
+        "code": 200,
+        "data": {
+          "user": {
+            "user_id": 1,
+            "full_name": "Sylvie Rutaganira",
+            "phone_number": "+250788123456",
+            "account_balance": 8900.00,
+            "email": "sylvie@example.rw",
+            "is_active": true,
+            "created_at": "2026-01-15T08:30:00Z"
+          },
+          "statistics": {
+            "total_sent": 6000.00,
+            "total_received": 5000.00,
+            "total_fees_paid": 100.00,
+            "transaction_count": 3
+          },
+          "recent_transactions": [
+            {
+              "transaction_id": 1,
+              "reference": "TX-2026-0001",
+              "type": "Sent",
+              "amount": 6000.00,
+              "counterpart": "Elvire Akayezu",
+              "status": "Success",
+              "datetime": "2026-03-01T10:15:00Z"
+            },
+            {
+              "transaction_id": 3,
+              "reference": "TX-2026-0003",
+              "type": "Received",
+              "amount": 5000.00,
+              "counterpart": "Jean Claude Habimana",
+              "status": "Success",
+              "datetime": "2026-03-03T09:05:00Z"
+            }
+          ]
+        }
+      }
+    },
+
+    "APIResponse_Error": {
+      "_description": "Standard error response format for API failures",
+      "example": {
+        "status": "error",
+        "code": 400,
+        "message": "Validation failed",
+        "errors": [
+          {
+            "field": "transaction_amount",
+            "message": "Amount must be greater than 0"
+          },
+          {
+            "field": "receiver_id",
+            "message": "Receiver not found"
+          }
+        ],
+        "timestamp": "2026-03-09T14:30:00Z"
+      }
+    }
+
+  },     
