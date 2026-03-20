@@ -44,3 +44,47 @@ CREATE TABLE IF NOT EXISTS Transaction_Categories (
     CONSTRAINT chk_cat_name  CHECK (CHAR_LENGTH(Category_Name) >= 2)
 ) COMMENT='Classifies transaction types (Transfer, Payment, etc.)';
 
+-- ============================================================
+-- TABLE: Transactions
+-- Description: Core financial transaction records from MoMo SMS
+-- ============================================================
+CREATE TABLE IF NOT EXISTS Transactions (
+    Transaction_ID              INT            AUTO_INCREMENT PRIMARY KEY COMMENT 'Unique transaction identifier',
+    Sender_ID                   INT            NOT NULL                   COMMENT 'FK to Users — the payer',
+    Receiver_ID                 INT            NOT NULL                   COMMENT 'FK to Users — the payee',
+    Transaction_Amount          DECIMAL(15,2)  NOT NULL                   COMMENT 'Amount transferred in RWF',
+    Fee                         DECIMAL(15,2)  NOT NULL DEFAULT 0.00      COMMENT 'Transaction fee charged',
+    Balance_After_Transaction   DECIMAL(15,2)                             COMMENT 'Sender balance after deduction',
+    Transaction_DateTime        DATETIME       NOT NULL                   COMMENT 'Date and time of the transaction',
+    Transaction_Category_ID     INT                                       COMMENT 'FK to Transaction_Categories',
+    Transaction_Reference       VARCHAR(50)    UNIQUE                     COMMENT 'Unique reference code (e.g. TX1001)',
+    Status                      ENUM('Success','Failed','Pending')
+                                               NOT NULL DEFAULT 'Pending' COMMENT 'Current transaction status',
+    Description                 VARCHAR(255)                              COMMENT 'Optional memo or description',
+    Created_At                  DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Record insertion timestamp',
+
+    CONSTRAINT fk_tx_sender     FOREIGN KEY (Sender_ID)               REFERENCES Users(User_ID)                  ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_tx_receiver   FOREIGN KEY (Receiver_ID)             REFERENCES Users(User_ID)                  ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_tx_category   FOREIGN KEY (Transaction_Category_ID) REFERENCES Transaction_Categories(Category_ID) ON DELETE SET NULL ON UPDATE CASCADE,
+
+    CONSTRAINT chk_amount       CHECK (Transaction_Amount > 0),
+    CONSTRAINT chk_fee          CHECK (Fee >= 0),
+    CONSTRAINT chk_not_self     CHECK (Sender_ID <> Receiver_ID)
+) COMMENT='Core MoMo transaction records parsed from SMS data';
+
+
+-- ============================================================
+-- TABLE: Transaction_Category_Mapping  (JUNCTION TABLE — resolves M:N)
+-- Description: One transaction can belong to multiple categories
+--              (e.g. a "Merchant Payment" is both Payment + Transfer)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS Transaction_Category_Mapping (
+    Mapping_ID      INT  AUTO_INCREMENT PRIMARY KEY COMMENT 'Surrogate PK for this junction',
+    Transaction_ID  INT  NOT NULL                   COMMENT 'FK to Transactions',
+    Category_ID     INT  NOT NULL                   COMMENT 'FK to Transaction_Categories',
+    Assigned_At     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'When mapping was assigned',
+
+    CONSTRAINT fk_map_tx   FOREIGN KEY (Transaction_ID) REFERENCES Transactions(Transaction_ID)         ON DELETE CASCADE,
+    CONSTRAINT fk_map_cat  FOREIGN KEY (Category_ID)    REFERENCES Transaction_Categories(Category_ID)  ON DELETE CASCADE,
+    CONSTRAINT uq_tx_cat   UNIQUE (Transaction_ID, Category_ID)
+) COMMENT='Junction table resolving many-to-many between Transactions and Transaction_Categories';
