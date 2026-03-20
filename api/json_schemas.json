@@ -76,7 +76,13 @@
     },
 
     "Transaction_Category_Mapping": {
-      "_description": "Junction table record resolving M:N between Transactions and Transaction_Categories",
+      "_description": "Junction table record resolving M:N between Transactions and      { "sql_table": "Transaction_Category_Mapping", "sql_column": "Transaction_ID + Category_ID", "json_field": "additional_categories (array)", "sql_type": "Composite FK (M:N junction)", "json_type": "array of objects", "notes": "Junction table produces array in JSON" },
+      { "sql_table": "System_Logs", "sql_column": "Event_Type",        "json_field": "event_type",        "sql_type": "ENUM('INFO','WARNING','ERROR','DEBUG')", "json_type": "string", "notes": "" },
+      { "sql_table": "System_Logs", "sql_column": "Event_Description", "json_field": "event_description", "sql_type": "TEXT",                                  "json_type": "string", "notes": "Long text mapped to plain string" },
+      { "sql_table": "System_Logs", "sql_column": "IP_Address",        "json_field": "ip_address",        "sql_type": "VARCHAR(45)",                           "json_type": "string", "notes": "Supports both IPv4 and IPv6" }
+    ]
+  }
+} Transaction_Categories",
       "_sql_table": "Transaction_Category_Mapping",
       "_sql_columns": ["Mapping_ID", "Transaction_ID", "Category_ID", "Assigned_At"],
       "example": {
@@ -89,7 +95,10 @@
 
     "CompleteTransaction": {
       "_description": "Full transaction object with ALL related nested data used for detailed API responses. Represents a JOIN across Transactions, Users (sender + receiver), Transaction_Categories, and System_Logs.",
-      "_sql_mapping": "SELECT t.*, s.*, r.*, tc.*, sl.* FROM Transactions t JOIN Users s ON t.Sender_ID=s.User_ID JOIN Users r ON t.Receiver_ID=r.User_ID LEFT JOIN Transaction_Categories tc ON t.Transaction_Category_ID=tc.Category_ID LEFT JOIN System_Logs sl ON t.Transaction_ID=sl.Transaction_ID",
+      "_sql_mapping": "SELECT t.*, s.*, r.*, tc.*, sl.* FROM Transactions t JOIN      { "sql_table": "Transactions", "sql_column": "Transaction_Amount",    "json_field": "amount",                  "sql_type": "DECIMAL(15,2)",                 "json_type": "number (float)", "notes": "" },
+      { "sql_table": "Transactions", "sql_column": "Fee",                   "json_field": "fee",                     "sql_type": "DECIMAL(15,2)",                 "json_type": "number (float)", "notes": "" },
+      { "sql_table": "Transactions", "sql_column": "Status",                "json_field": "status",                  "sql_type": "ENUM('Success','Failed','Pending')", "json_type": "string",    "notes": "Enum serialised as string" },
+      { "sql_table": "Transactions", "sql_column": "Transaction_Category_ID","json_field": "category (nested object)","sql_type": "INT FK  Users s ON t.Sender_ID=s.User_ID JOIN      { "sql_table": "Transactions", "sql_column": "Receiver_ID",           "json_field": "receiver (nested object)","sql_type": "INT FK  Users r ON t.Receiver_ID=r.User_ID LEFT JOIN Transaction_Categories tc ON t.Transaction_Category_ID=tc.Category_ID LEFT JOIN System_Logs sl ON t.Transaction_ID=sl.Transaction_ID",
       "example": {
         "transaction_id": 1,
         "reference": "TX-2026-0001",
@@ -271,3 +280,15 @@
     }
 
   },     
+
+"SQL_to_JSON_Mapping": {
+    "_description": "Complete mapping between SQL table columns and their JSON field equivalents",
+    "mappings": [
+      { "sql_table": "Users", "sql_column": "User_ID",         "json_field": "user_id",            "sql_type": "INT AUTO_INCREMENT PK", "json_type": "number",          "notes": "Integer primary key" },
+      { "sql_table": "Users", "sql_column": "Full_Name",       "json_field": "full_name",          "sql_type": "VARCHAR(100) NOT NULL", "json_type": "string",          "notes": "User's display name" },
+      { "sql_table": "Users", "sql_column": "Phone_Number",    "json_field": "phone_number",       "sql_type": "VARCHAR(15) UNIQUE",    "json_type": "string",          "notes": "E.164 format, e.g. +250788123456" },
+      { "sql_table": "Users", "sql_column": "Account_Balance", "json_field": "account_balance",    "sql_type": "DECIMAL(15,2)",         "json_type": "number (float)",  "notes": "Always 2 decimal places" },
+      { "sql_table": "Users", "sql_column": "Is_Active",       "json_field": "is_active",          "sql_type": "TINYINT(1)",            "json_type": "boolean",         "notes": "0/1 in SQL becomes false/true in JSON" },
+      { "sql_table": "Users", "sql_column": "Created_At",      "json_field": "created_at",         "sql_type": "DATETIME",              "json_type": "string (ISO 8601)","notes": "Serialised as UTC ISO 8601 string" },
+      { "sql_table": "Transactions", "sql_column": "Transaction_ID",        "json_field": "transaction_id",          "sql_type": "INT AUTO_INCREMENT PK",         "json_type": "number",         "notes": "" },
+      { "sql_table": "Transactions", "sql_column": "Sender_ID",             "json_field": "sender (nested object)",  "sql_type": "INT FK 
