@@ -131,14 +131,3 @@ CREATE INDEX idx_log_created      ON System_Logs(Created_At);
 CREATE INDEX idx_log_tx           ON System_Logs(Transaction_ID);
 CREATE INDEX idx_user_phone       ON      { "sql_table": "Transactions", "sql_column": "Receiver_ID",           "json_field": "receiver (nested object)","sql_type": "INT FK  Users(Phone_Number);
  
-"SQL_to_JSON_Mapping": {
-    "_description": "Complete mapping between SQL table columns and their JSON field equivalents",
-    "mappings": [
-      { "sql_table": "Users", "sql_column": "User_ID",         "json_field": "user_id",            "sql_type": "INT AUTO_INCREMENT PK", "json_type": "number",          "notes": "Integer primary key" },
-      { "sql_table": "Users", "sql_column": "Full_Name",       "json_field": "full_name",          "sql_type": "VARCHAR(100) NOT NULL", "json_type": "string",          "notes": "User's display name" },
-      { "sql_table": "Users", "sql_column": "Phone_Number",    "json_field": "phone_number",       "sql_type": "VARCHAR(15) UNIQUE",    "json_type": "string",          "notes": "E.164 format, e.g. +250788123456" },
-      { "sql_table": "Users", "sql_column": "Account_Balance", "json_field": "account_balance",    "sql_type": "DECIMAL(15,2)",         "json_type": "number (float)",  "notes": "Always 2 decimal places" },
-      { "sql_table": "Users", "sql_column": "Is_Active",       "json_field": "is_active",          "sql_type": "TINYINT(1)",            "json_type": "boolean",         "notes": "0/1 in SQL becomes false/true in JSON" },
-      { "sql_table": "Users", "sql_column": "Created_At",      "json_field": "created_at",         "sql_type": "DATETIME",              "json_type": "string (ISO 8601)","notes": "Serialised as UTC ISO 8601 string" },
-      { "sql_table": "Transactions", "sql_column": "Transaction_ID",        "json_field": "transaction_id",          "sql_type": "INT AUTO_INCREMENT PK",         "json_type": "number",         "notes": "" },
-      { "sql_table": "Transactions", "sql_column": "Sender_ID",             "json_field": "sender (nested object)",  "sql_type": "INT FK 
