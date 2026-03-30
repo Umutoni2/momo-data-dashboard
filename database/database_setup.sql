@@ -29,7 +29,6 @@ CREATE TABLE IF NOT EXISTS Users (
     CONSTRAINT chk_balance   CHECK  (Account_Balance >= 0)
 ) COMMENT='MoMo registered account holders';
 
-
 -- ============================================================
 -- TABLE: Transaction_Categories
 -- Description: Classifies the type of each transaction
@@ -63,15 +62,14 @@ CREATE TABLE IF NOT EXISTS Transactions (
     Description                 VARCHAR(255)                              COMMENT 'Optional memo or description',
     Created_At                  DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Record insertion timestamp',
 
-    CONSTRAINT fk_tx_sender     FOREIGN KEY (Sender_ID)               REFERENCES Users(User_ID)                  ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT fk_tx_receiver   FOREIGN KEY (Receiver_ID)             REFERENCES Users(User_ID)                  ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT fk_tx_category   FOREIGN KEY (Transaction_Category_ID) REFERENCES Transaction_Categories(Category_ID) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT fk_tx_sender     FOREIGN KEY (Sender_ID)               REFERENCES Users(User_ID)                       ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_tx_receiver   FOREIGN KEY (Receiver_ID)             REFERENCES Users(User_ID)                       ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_tx_category   FOREIGN KEY (Transaction_Category_ID) REFERENCES Transaction_Categories(Category_ID)  ON DELETE SET NULL ON UPDATE CASCADE,
 
     CONSTRAINT chk_amount       CHECK (Transaction_Amount > 0),
     CONSTRAINT chk_fee          CHECK (Fee >= 0),
     CONSTRAINT chk_not_self     CHECK (Sender_ID <> Receiver_ID)
 ) COMMENT='Core MoMo transaction records parsed from SMS data';
-
 
 -- ============================================================
 -- TABLE: Transaction_Category_Mapping  (JUNCTION TABLE — resolves M:N)
@@ -87,13 +85,7 @@ CREATE TABLE IF NOT EXISTS Transaction_Category_Mapping (
     CONSTRAINT fk_map_tx   FOREIGN KEY (Transaction_ID) REFERENCES Transactions(Transaction_ID)         ON DELETE CASCADE,
     CONSTRAINT fk_map_cat  FOREIGN KEY (Category_ID)    REFERENCES Transaction_Categories(Category_ID)  ON DELETE CASCADE,
     CONSTRAINT uq_tx_cat   UNIQUE (Transaction_ID, Category_ID)
-) COMMENT='Junction table resolving many-to-many between Transactions and      { "sql_table": "Transaction_Category_Mapping", "sql_column": "Transaction_ID + Category_ID", "json_field": "additional_categories (array)", "sql_type": "Composite FK (M:N junction)", "json_type": "array of objects", "notes": "Junction table produces array in JSON" },
-      { "sql_table": "System_Logs", "sql_column": "Event_Type",        "json_field": "event_type",        "sql_type": "ENUM('INFO','WARNING','ERROR','DEBUG')", "json_type": "string", "notes": "" },
-      { "sql_table": "System_Logs", "sql_column": "Event_Description", "json_field": "event_description", "sql_type": "TEXT",                                  "json_type": "string", "notes": "Long text mapped to plain string" },
-      { "sql_table": "System_Logs", "sql_column": "IP_Address",        "json_field": "ip_address",        "sql_type": "VARCHAR(45)",                           "json_type": "string", "notes": "Supports both IPv4 and IPv6" }
-    ]
-  }
-} Transaction_Categories';
+) COMMENT='Junction table resolving many-to-many between Transactions and Transaction_Categories';
 
 -- ============================================================
 -- TABLE: System_Logs
@@ -110,13 +102,9 @@ CREATE TABLE IF NOT EXISTS System_Logs (
     IP_Address        VARCHAR(45)                               COMMENT 'IPv4 or IPv6 address of client',
     Created_At        DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp when event was logged',
 
-    CONSTRAINT fk_log_user  FOREIGN KEY (User_ID)        REFERENCES      { "sql_table": "Transactions", "sql_column": "Transaction_Amount",    "json_field": "amount",                  "sql_type": "DECIMAL(15,2)",                 "json_type": "number (float)", "notes": "" },
-      { "sql_table": "Transactions", "sql_column": "Fee",                   "json_field": "fee",                     "sql_type": "DECIMAL(15,2)",                 "json_type": "number (float)", "notes": "" },
-      { "sql_table": "Transactions", "sql_column": "Status",                "json_field": "status",                  "sql_type": "ENUM('Success','Failed','Pending')", "json_type": "string",    "notes": "Enum serialised as string" },
-      { "sql_table": "Transactions", "sql_column": "Transaction_Category_ID","json_field": "category (nested object)","sql_type": "INT FK  Users(User_ID)        ON DELETE SET NULL,
-    CONSTRAINT fk_log_tx    FOREIGN KEY (Transaction_ID) REFERENCES Transactions(Transaction_ID) ON DELETE SET NULL
+    CONSTRAINT fk_log_user  FOREIGN KEY (User_ID)        REFERENCES Users(User_ID)                ON DELETE SET NULL,
+    CONSTRAINT fk_log_tx    FOREIGN KEY (Transaction_ID) REFERENCES Transactions(Transaction_ID)   ON DELETE SET NULL
 ) COMMENT='System audit logs for ETL pipeline processing and security events';
-
 
 -- ============================================================
 -- INDEXES — Performance optimisation
@@ -129,5 +117,4 @@ CREATE INDEX idx_tx_category      ON Transactions(Transaction_Category_ID);
 CREATE INDEX idx_log_event_type   ON System_Logs(Event_Type);
 CREATE INDEX idx_log_created      ON System_Logs(Created_At);
 CREATE INDEX idx_log_tx           ON System_Logs(Transaction_ID);
-CREATE INDEX idx_user_phone       ON      { "sql_table": "Transactions", "sql_column": "Receiver_ID",           "json_field": "receiver (nested object)","sql_type": "INT FK  Users(Phone_Number);
- 
+CREATE INDEX idx_user_phone       ON Users(Phone_Number);
