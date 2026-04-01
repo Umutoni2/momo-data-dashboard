@@ -259,7 +259,7 @@ They verify:
 * Bash Scripts
 * ETL Data Processing
 
-Future Enhancements
+**Future Enhancements**
 
 - [ ] Implement JWT authentication
 - [ ] Add HTTPS support
