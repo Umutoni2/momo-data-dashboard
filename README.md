@@ -259,18 +259,39 @@ They verify:
 * Bash Scripts
 * ETL Data Processing
 
-# Future Improvements
+Future Enhancements
 
-* Real-time transaction updates
-* Advanced spending analytics
-* User authentication
-* Multiple account support
-* Improved dashboard visualizations
+- [ ] Implement JWT authentication
+- [ ] Add HTTPS support
+- [ ] Database persistence (SQLite integration)
+- [ ] Rate limiting middleware
+- [ ] Pagination for large datasets
+- [ ] Advanced search filters
+- [ ] API versioning (v1, v2)
+- [ ] Swagger/OpenAPI documentation
+- [ ] Docker containerization
+- [ ] CI/CD pipeline
 
-# License
+---
 
-This is an educational project; additional features will be added as it grows.
+## License
 
+Educational project for Database Systems course.  
+**University:** [African Leadership College Of Higher Educationn]  
+**Semester:** Spring 2026
 
+---
+
+## Contact
+
+**Team:** PixelStack  
+**GitHub:** https://github.com/Umutoni2/momo-data-dashboard  
+**Course:** Database Systems  
+**Assignment:** Week 3 - Building and Securing a REST API
+
+---
+
+**Last Updated:** March 28, 2026  
+**Version:** 2.0 (Week 3 REST API Implementation)
 
 
