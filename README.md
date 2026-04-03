@@ -631,7 +631,7 @@ pytest tests/
 <br />
 <a href="https://github.com/Olais11">@Olais11</a>
 <br />
-<i>REST API & Authentication</i>
+<i>REST API & Testing </i>
 </td>
 
 <td align="center">
@@ -651,7 +651,7 @@ pytest tests/
 <br />
 <a href="https://github.com/pchukwuka">@pchukwuka</a>
 <br />
-<i>Testing & Documentation</i>
+<i> Authentication& Integration</i>
 </td>
 
 <td align="center">
@@ -661,7 +661,7 @@ pytest tests/
 <br />
 <a href="https://github.com/Umutoni2">@Umutoni2</a>
 <br />
-<i>XML Parsing & Integration</i>
+<i>XML Parsing & Documentation</i>
 </td>
 </tr>
 </table>
