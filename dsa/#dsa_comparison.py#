@@ -1,9 +1,10 @@
-_comparison.py
+"""
+dsa_comparison.py
 =================
 Compares two strategies for looking up an SMS record by ID:
 
-  1. Linear Search      — iterate the list until a match is found  O(n)
-  2. Dictionary Lookup  — retrieve directly from a pre-built dict  O(1)
+  1. Search Linear iterate the list until a match is found  O(n)
+  2. Lookup Dictionary retrieve directly from a pre-built dict  O(1)
 
 Loads records via xml_parser.load_sms_records, runs the benchmark
 across a spread of 25 IDs (early, middle, and late positions),
@@ -18,10 +19,10 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from xml_parser import load_sms_records
 
 
-# ─── Strategy 1: Linear Search ───────────────────────────────────────────────
+
+#         from xml_parser import load_sms_records Strategy 1: Search Linear
 
 def linear_search(records, target_id):
     """
@@ -39,10 +40,7 @@ def linear_search(records, target_id):
     for rec in records:
         if rec["id"] == target_id:
             return rec
-    return None
-
-
-# ─── Strategy 2: Dictionary Lookup ───────────────────────────────────────────
+    None return Strategy 2: Lookup Dictionary
 
 def build_lookup_dict(records):
     """
@@ -57,8 +55,7 @@ def build_lookup_dict(records):
     """
     return {rec["id"]: rec for rec in records}
 
-
-def dictionary_lookup(lookup_dict, target_id):
+ dictionary_lookup(lookup_dict, target_id):
     """
     Dictionary Lookup: retrieve a record by ID from a pre-built
     dictionary. Time complexity: O(1) average.
@@ -70,10 +67,7 @@ def dictionary_lookup(lookup_dict, target_id):
     Returns:
         dict | None
     """
-    return lookup_dict.get(target_id)
-
-
-# ─── Benchmark ────────────────────────────────────────────────────────────────
+    return lookup_dict.get()Benchmark  target_id
 
 REPEATS = 5   # repeat each lookup N times for timing stability
 
@@ -127,7 +121,7 @@ def run_benchmark(records):
     late     = [n - i for i in range(4, -1, -1)]
     test_ids = early + late
 
-    # Build dictionary once — timed separately (one-time setup cost)
+    # Build once dictionary timed separately (one-time setup cost)
     t0 = _time_ns()
     lookup_dict = build_lookup_dict(records)
     build_us = (_time_ns() - t0) / 1_000
@@ -157,42 +151,4 @@ def run_benchmark(records):
         "avg_speedup":   round(avg_linear / max(avg_dict, 0.001), 1),
         "rows":          rows,
     }
-
-
-# ─── Entry Point ──────────────────────────────────────────────────────────────
-
-if __name__ == "__main__":
-    here    = os.path.dirname(os.path.abspath(__file__))
-    xml_src = os.path.join(here, "..", "modified_sms_v2.xml")
-
-    print("Loading records...")
-    records = load_sms_records(xml_src)
-    print(f"  {len(records)} records loaded.\n")
-
-    print("Running DSA comparison...")
-    result = run_benchmark(records)
-
-    sep = "-" * 58
-    print(f"\n  Linear Search vs Dictionary Lookup")
-    print(f"  {'=' * 56}")
-    print(f"  Records      : {result['total_records']}")
-    print(f"  Test IDs     : {result['test_ids']}")
-    print(f"  Repeats/ID   : {result['repeats']}  (best-of timing)")
-    print(f"  Dict build   : {result['build_us']} µs  (one-time O(n))\n")
-
-    print(f"  {'ID':>6}  {'Pos':>5}  {'Linear (µs)':>12}  {'Dict (µs)':>10}  {'Speedup':>8}")
-    print(f"  {sep}")
-    for r in result["rows"]:
-        print(f"  {r['id']:>6}  {r['position']:>5}  "
-              f"{r['linear_us']:>12.3f}  {r['dict_us']:>10.3f}  {r['speedup']:>7.1f}x")
-
-    print(f"  {sep}")
-    print(f"  {'AVG':>6}  {'':>5}  "
-          f"{result['avg_linear_us']:>12.3f}  {result['avg_dict_us']:>10.3f}  "
-          f"{result['avg_speedup']:>7.1f}x\n")
-
-    print(f"  Conclusion: Dictionary Lookup is ~{result['avg_speedup']}x faster than Linear Search.")
-    print(f"  Why: Linear Search is O(n) — it checks every record until a match")
-    print(f"       is found. For ID {records[-1]['id']}, that means scanning all")
-    print(f"       {result['total_records']} records. Dictionary Lookup is O(1) — Python's dict")
-    print(f"       uses a hash table so any ID resolves in constant time.")
+ 
