@@ -651,7 +651,7 @@ pytest tests/
 <br />
 <a href="https://github.com/pchukwuka">@pchukwuka</a>
 <br />
-<i> Authentication& Integration</i>
+<i> Authentication& Documentation</i>
 </td>
 
 <td align="center">
@@ -661,7 +661,7 @@ pytest tests/
 <br />
 <a href="https://github.com/Umutoni2">@Umutoni2</a>
 <br />
-<i>XML Parsing & Documentation</i>
+<i>XML Parsing & Integration</i>
 </td>
 </tr>
 </table>
