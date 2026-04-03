@@ -142,3 +142,133 @@ class TransactionHandler(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Authorization, Content-Type")
         self.end_headers()
+
+    # ── GET ───────────────────────────────────────────────────────────────────
+    def do_GET(self):
+        if not self._require_auth():
+            return
+
+        segments, query = self._parse_url()
+
+        # GET /transactions
+        if segments == ["transactions"]:
+            items = record_list[:]
+
+            # Optional filter by address field
+            addr = query.get("address", [None])[0]
+            if addr:
+                items = [r for r in items if r.get("address") == addr]
+
+            # Pagination
+            try:
+                limit  = int(query.get("limit",  [len(items)])[0])
+                offset = int(query.get("offset", [0])[0])
+            except ValueError:
+                self._write_error(400, "limit and offset must be integers")
+                return
+
+            total = len(items)
+            page  = items[offset: offset + limit]
+            self._write_json(200, {
+                "total":        total,
+                "offset":       offset,
+                "limit":        limit,
+                "returned":     len(page),
+                "transactions": page,
+            })
+            return
+
+        # GET /transactions/<id>
+        if len(segments) == 2 and segments[0] == "transactions":
+            rid, err = self._resolve_id(segments[1])
+            if err:
+                self._write_error(400, err)
+                return
+            rec = record_map.get(rid)
+            if rec is None:
+                self._write_error(404, f"No record with id={rid}")
+                return
+            self._write_json(200, rec)
+            return
+
+        self._write_error(404, "Unknown endpoint")
+
+    # ── POST ──────────────────────────────────────────────────────────────────
+    def do_POST(self):
+        global _next_id
+        if not self._require_auth():
+            return
+
+        segments, _ = self._parse_url()
+        if segments != ["transactions"]:
+            self._write_error(404, "Unknown endpoint")
+            return
+
+        payload = self._get_body()
+        if payload is None:
+            self._write_error(400, "Request body must be valid JSON")
+            return
+        if not payload.get("body"):
+            self._write_error(422, "Field 'body' is required")
+            return
+
+        now_ms  = str(int(time.time() * 1000))
+        now_str = time.strftime("%d %b %Y %I:%M:%S %p")
+
+        new_rec = {
+            "id":             _next_id,
+            "protocol":       payload.get("protocol",       "0"),
+            "address":        payload.get("address",        "M-Money"),
+            "date":           payload.get("date",           now_ms),
+            "type":           payload.get("type",           "1"),
+            "body":           payload["body"],
+            "service_center": payload.get("service_center", ""),
+            "read":           payload.get("read",           "1"),
+            "status":         payload.get("status",         "-1"),
+            "date_sent":      payload.get("date_sent",      now_ms),
+            "readable_date":  payload.get("readable_date",  now_str),
+            "contact_name":   payload.get("contact_name",   "(Unknown)"),
+        }
+
+        record_list.append(new_rec)
+        record_map[_next_id] = new_rec
+        _next_id += 1
+
+        self._write_json(201, {"message": "Record created", "transaction": new_rec})
+
+    # ── PUT ───────────────────────────────────────────────────────────────────
+    def do_PUT(self):
+        if not self._require_auth():
+            return
+
+        segments, _ = self._parse_url()
+        if len(segments) != 2 or segments[0] != "transactions":
+            self._write_error(404, "Unknown endpoint")
+            return
+
+        rid, err = self._resolve_id(segments[1])
+        if err:
+            self._write_error(400, err)
+            return
+
+        rec = record_map.get(rid)
+        if rec is None:
+            self._write_error(404, f"No record with id={rid}")
+            return
+
+        payload = self._get_body()
+        if payload is None:
+            self._write_error(400, "Request body must be valid JSON")
+            return
+
+        payload.pop("id", None)   # ID is immutable
+
+        updatable = {
+            "address", "date", "type", "body", "service_center",
+            "read", "status", "date_sent", "readable_date", "contact_name",
+        }
+        for key, value in payload.items():
+            if key in updatable:
+                rec[key] = value
+
+        self._write_json(200, {"message": f"Record {rid} updated", "transaction": rec})
