@@ -739,7 +739,7 @@ Dependencies:
 ## Documentation
 
 ### Week 3 (REST API) 
-- [Complete API Reference](docs/api_docs.md) - 40+ pages
+- [Complete API Reference]([docs/api_docs.md](https://github.com/Umutoni2/momo-data-dashboard/blob/main/docs/api_docs.md)) - 40+ pages
 - [Testing Guide](docs/TESTING_GUIDE.md) - Step-by-step instructions
 - [AI Usage Log](docs/ai-usage-log.md) - Transparency report
 - [Security Analysis](docs/api_docs.md#security) - Basic Auth limitations
