@@ -747,6 +747,7 @@ Dependencies:
 ### Week 2 (ETL Pipeline)
 - [Database Design (ERD)](docs/ERD.pdf)
 - [Week 2 Documentation](https://drive.google.com/file/d/1k7w8WEl845hQd2jpXkASi9ydeQyFJRJx/view?usp=sharing)
+- [Week 3 Documentation](https://drive.google.com/file/d/1k7w8WEl845hQd2jpXkASi9ydeQyFJRJx/view?usp=sharing)
 
 ---
 
@@ -767,10 +768,10 @@ Performance optimization
 API documentation best practices  
 
 ### Key Insights
-💡 **Security:** Basic Auth requires HTTPS in production  
-💡 **Performance:** Data structure choice has exponential impact at scale  
-💡 **Documentation:** Good docs are as important as good code  
-💡 **Testing:** Comprehensive tests catch bugs early  
+**Security:** Basic Auth requires HTTPS in production  
+**Performance:** Data structure choice has exponential impact at scale  
+**Documentation:** Good docs are as important as good code  
+**Testing:** Comprehensive tests catch bugs early  
 
 ---
 
@@ -920,10 +921,10 @@ Learning Hours:         20+
 
 ## Achievements
 
-- ✅ **Week 2:** Complete ETL pipeline with database integration
-- ✅ **Week 3:** Production-ready REST API with security analysis
-- ✅ **100% Test Pass Rate:** All 5 API tests successful
-- ✅ **19.5x Performance:** DSA optimization proven
+- **Week 2:** Complete ETL pipeline with database integration
+- **Week 3:** Production-ready REST API with security analysis
+- **100% Test Pass Rate:** All 5 API tests successful
+- **19.5x Performance:** DSA optimization proven
 - **Comprehensive Docs:** 100+ pages of documentation
 - **Security Aware:** Full vulnerability analysis included
 
@@ -940,7 +941,7 @@ Learning Hours:         20+
 
 <div align="center">
 
-### ⭐ Star this repo if you found it helpful!
+### Star this repo if you found it helpful!
 
 **Made with by Team PixelStack**
 
