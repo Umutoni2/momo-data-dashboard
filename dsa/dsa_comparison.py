@@ -41,3 +41,34 @@ def linear_search(records, target_id):
         if rec["id"] == target_id:
             return rec
     return None
+
+
+# ─── Strategy 2: Dictionary Lookup ───────────────────────────────────────────
+
+def build_lookup_dict(records):
+    """
+    Build an {id: record} dictionary from a list of records.
+    One-time O(n) cost; subsequent lookups are O(1) average.
+
+    Args:
+        records (list[dict]): Full list of SMS records.
+
+    Returns:
+        dict[int, dict]: Mapping of record id to record dict.
+    """
+    return {rec["id"]: rec for rec in records}
+
+
+def dictionary_lookup(lookup_dict, target_id):
+    """
+    Dictionary Lookup: retrieve a record by ID from a pre-built
+    dictionary. Time complexity: O(1) average.
+
+    Args:
+        lookup_dict (dict[int, dict]): Pre-built {id: record} dict.
+        target_id   (int):             ID to look up.
+
+    Returns:
+        dict | None
+    """
+    return lookup_dict.get(target_id)
