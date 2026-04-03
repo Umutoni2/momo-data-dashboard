@@ -9,7 +9,7 @@
 
 **A comprehensive mobile money transaction processing system with REST API, ETL pipeline, and analytics dashboard**
 
-[Features](#-features) • [Quick Start](#-quick-start) • [API Docs](#-api-documentation) • [Architecture](#-architecture) • [Team](#-team)
+[Features](#features) • [Quick Start](#quick-start) • [API Docs](#api-documentation) • [Architecture](#architecture) • [Team](#team)
 
 </div>
 
