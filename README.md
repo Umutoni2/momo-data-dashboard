@@ -99,71 +99,61 @@ Implemented secure REST API with authentication, CRUD operations, and DSA optimi
 
 ```
 momo-data-dashboard/
+project-root/
 │
-├── Week 3: REST API (NEW!)
-│   ├── api/
-│   │   ├── server.py           # Plain Python HTTP server 
-│   │   ├── auth.py             # Basic Authentication 
-│   │   ├── parser.py           # XML to JSON converter 
-│   │   └── database.py         # In-memory storage 
-│   │
-│   ├── dsa/
-│   │   ├── linear_search.py    # O(n) algorithm 
-│   │   ├── dictionary_lookup.py # O(1) algorithm 
-│   │   └── compare_efficiency.py # Performance analysis 
-│   │
-│   ├── docs/
-│   │   ├── api_docs.md         # Complete API reference 
-│   │   ├── TESTING_GUIDE.md    # Testing instructions 
-│   │   └── ai-usage-log.md     # AI assistance tracking 
-│   │
-│   └── screenshots/            # API test screenshots 
-│       ├── GET_success.png
-│       ├── GET_unauthorized.png
-│       ├── POST_create.png
-│       ├── PUT_update.png
-│       └── DELETE_remove.png
+├── app/                          # Core application logic
+│   ├── __init__.py
+│   ├── app.py                    # Main app entry point (Flask/FastAPI)
+│   ├── server.py                 # HTTP server (your current implementation)
+│   ├── db.py                     # Database connection / helpers
+│   ├── schemas.py                # Python schema definitions (validation)
+│   └── json_schemas.json         # JSON schema definitions
 │
-├── Week 2: ETL Pipeline
-│   ├── etl/
-│   │   ├── parse_xml.py        # XML parser
-│   │   ├── clean_normalize.py  # Data cleaning
-│   │   ├── categorize.py       # Transaction categorization
-│   │   ├── load_db.py          # Database loader
-│   │   └── config.py           # Configuration
-│   │
-│   ├── database/
-│   │   └── database_setup.sql  # SQLite schema
-│   │
-│   └── data/
-│       ├── raw/                # Original XML files
-│       ├── processed/          # JSON outputs
-│       └── db.sqlite3          # SQLite database
+├── database/                     # Database-related files
+│   ├── db.sqlite3
+│   └── database_setup.sql
 │
-├── Dashboard (Week 2)
-│   ├── index.html              # Web dashboard
-│   ├── web/
-│   │   ├── style.css
-│   │   └── chart_handler.js
-│   │
-│   └── scripts/
-│       ├── run_etl.sh
-│       ├── export_json.sh
-│       └── serve_frontend.sh
+├── dsa/                          # Data structures & algorithms
+│   ├── dsa_comparison.py
+│   └── xml_parser.py
 │
-├── Documentation
-│   ├── README.md               # This file
-│   ├── requirements.txt        # Python dependencies
-│   ├── architecture.png        # System diagram
-│   └── docs/
-│       ├── ERD.pdf             # Database design
-│       └── Week2_Documentation.pdf
+├── etl/                          # ETL pipeline (extract, transform, load)
+│   └── (ETL scripts)
 │
-└── Tests
-    └── tests/
-        ├── test_parse_xml.py
-        ├── test_clean_normalize.py
-        └── test_categorize.py
+├── data/                         # Data storage
+│   ├── raw/                      # Raw input data
+│   ├── processed/                # Processed data
+│   └── logs/                     # Logs (if stored as files)
+│
+├── logs/                         # Application logs
+│
+├── tests/                        # Unit & integration tests
+│   └── (test files)
+│
+├── scripts/                      # Utility scripts (run, maintenance, etc.)
+│
+├── web/                          # Frontend (if applicable)
+│   ├── index.html
+│   ├── style.css
+│   ├── chart_handler.js
+│   └── assets/
+│
+├── docs/                         # Documentation
+│   ├── api_docs.md
+│   ├── architecture.png
+│   ├── ERD.pdf
+│   └── ai-usage-log.md
+│
+├── examples/                     # Example requests / payloads
+│
+├── screenshots/                  # Project screenshots
+│
+├── modified_sms_v2.xml           # Source data file
+│
+├── .env.example                  # Environment variables template
+├── .gitignore
+├── README.md
+├── requirements.txt
 ```
 
 ---
