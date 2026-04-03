@@ -99,9 +99,8 @@ Implemented secure REST API with authentication, CRUD operations, and DSA optimi
 
 ```
 momo-data-dashboard/
-project-root/
 │
-├── app/                          # Core application logic
+├── api/                          # Core application logic
 │   ├── __init__.py
 │   ├── app.py                    # Main app entry point (Flask/FastAPI)
 │   ├── server.py                 # HTTP server (your current implementation)
