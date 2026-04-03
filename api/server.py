@@ -272,3 +272,58 @@ class TransactionHandler(BaseHTTPRequestHandler):
                 rec[key] = value
 
         self._write_json(200, {"message": f"Record {rid} updated", "transaction": rec})
+
+    # ── DELETE ────────────────────────────────────────────────────────────────
+    def do_DELETE(self):
+        if not self._require_auth():
+            return
+
+        segments, _ = self._parse_url()
+        if len(segments) != 2 or segments[0] != "transactions":
+            self._write_error(404, "Unknown endpoint")
+            return
+
+        rid, err = self._resolve_id(segments[1])
+        if err:
+            self._write_error(400, err)
+            return
+
+        rec = record_map.get(rid)
+        if rec is None:
+            self._write_error(404, f"No record with id={rid}")
+            return
+
+        record_list.remove(rec)
+        del record_map[rid]
+
+        self._write_json(200, {"message": f"Record {rid} deleted"})
+
+
+# ── Entry point ───────────────────────────────────────────────────────────────
+
+def start():
+    banner = "=" * 44
+    print(f"\n  {banner}")
+    print(f"  MoMo SMS API  —  Team Red")
+    print(f"  {banner}")
+    print(f"  http://{HOST}:{PORT}")
+    print(f"  Basic Auth: {API_USER} / {API_PASS}")
+    print(f"  Records loaded: {len(record_list)}")
+    print(f"  {banner}")
+    print(f"  GET    /transactions  (+ ?address= ?limit= ?offset=)")
+    print(f"  GET    /transactions/<id>")
+    print(f"  POST   /transactions")
+    print(f"  PUT    /transactions/<id>")
+    print(f"  DELETE /transactions/<id>")
+    print(f"  {banner}\n")
+
+    httpd = HTTPServer((HOST, PORT), TransactionHandler)
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        print("\n  Shutting down.")
+        httpd.server_close()
+
+
+if __name__ == "__main__":
+    start()
