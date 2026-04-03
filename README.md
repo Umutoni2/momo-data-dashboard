@@ -736,7 +736,7 @@ Dependencies:
 ### Week 2 (ETL Pipeline)
 - [Database Design (ERD)](docs/ERD.pdf)
 - [Week 2 Documentation](https://drive.google.com/file/d/1k7w8WEl845hQd2jpXkASi9ydeQyFJRJx/view?usp=sharing)
-- [Week 3 Documentation](https://drive.google.com/file/d/1k7w8WEl845hQd2jpXkASi9ydeQyFJRJx/view?usp=sharing)
+- [Week 3 Documentation](https://drive.google.com/file/d/1dfUBdHmL6MHd9fxl8y18hMqerOlQ2ML4/view?usp=sharing)
 
 ---
 
