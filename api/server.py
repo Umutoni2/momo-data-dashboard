@@ -62,3 +62,83 @@ def _check_credentials(header_value):
         return user == API_USER and pw == API_PASS
     except Exception:
         return False
+
+
+# ── Request handler ───────────────────────────────────────────────────────────
+
+class TransactionHandler(BaseHTTPRequestHandler):
+    """Handles all HTTP requests for the /transactions resource."""
+
+    # ── Logging ──────────────────────────────────────────────────────────────
+    def log_message(self, fmt, *args):
+        ts = time.strftime("%H:%M:%S")
+        print(f"[{ts}]  {args[0].split()[0]:<7} {args[0].split()[1] if len(args[0].split()) > 1 else ''}  →  {args[1]}")
+
+    # ── Low-level response writers ────────────────────────────────────────────
+    def _write_json(self, status, payload):
+        """Serialise payload to JSON and send with correct headers."""
+        data = json.dumps(payload, indent=2).encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type",   "application/json")
+        self.send_header("Content-Length", str(len(data)))
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        self.wfile.write(data)
+
+    def _write_error(self, status, message):
+        """Send a JSON error payload."""
+        payload = {"error": message, "code": status}
+        data    = json.dumps(payload).encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type",   "application/json")
+        self.send_header("Content-Length", str(len(data)))
+        if status == 401:
+            self.send_header("WWW-Authenticate", 'Basic realm="MoMo SMS API"')
+        self.end_headers()
+        self.wfile.write(data)
+
+    # ── Helpers ───────────────────────────────────────────────────────────────
+    def _require_auth(self):
+        """Return True if authenticated, else send 401 and return False."""
+        if _check_credentials(self.headers.get("Authorization", "")):
+            return True
+        self._write_error(401, "Authentication required")
+        return False
+
+    def _get_body(self):
+        """Read and JSON-decode the request body. Returns None on failure."""
+        length = int(self.headers.get("Content-Length", 0))
+        if not length:
+            return None
+        try:
+            return json.loads(self.rfile.read(length).decode("utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            return None
+
+    def _parse_url(self):
+        """
+        Split self.path into (segments, query_dict).
+        e.g. /transactions/42?limit=5  →  (["transactions","42"], {"limit":["5"]})
+        """
+        parsed   = urlparse(self.path)
+        segments = [s for s in parsed.path.split("/") if s]
+        query    = parse_qs(parsed.query)
+        return segments, query
+
+    def _resolve_id(self, raw):
+        """
+        Convert a path segment to an int record ID.
+        Returns (id, None) on success or (None, error_message) on failure.
+        """
+        try:
+            return int(raw), None
+        except (ValueError, TypeError):
+            return None, f"Invalid ID '{raw}' — must be an integer"
+
+    # ── CORS preflight ────────────────────────────────────────────────────────
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self.send_header("Access-Control-Allow-Origin",  "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Authorization, Content-Type")
+        self.end_headers()
